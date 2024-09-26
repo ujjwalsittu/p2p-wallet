@@ -1,0 +1,28 @@
+node_modules
+# Keep environment variables out of version control
+.env
+migrations
+.sql
+# Ignore the build directory
+build
+# Ignore the coverage directory
+coverage
+# Ignore the .DS_Store file
+.DS_Store
+# Ignore the .vscode directory
+.vscode
+# Ignore the .idea directory
+.idea
+# Ignore the .env file
+#.env
+# Ignore the .env.example file
+.env.example
+# Ignore the .env.test file
+.env.test
+# Ignore the .env.development file
+.env.development
+# Ignore the .env.production file
+.env.production
+# Ignore the .env.local file
+.env.local
+

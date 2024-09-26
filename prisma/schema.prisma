@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid()) // CUID for user ID
+  phone        String        @unique
+  email        String        @unique
+  password     String
+  aadhaar      String? // For KYC
+  pan          String? // For KYC
+  kycCompleted Boolean       @default(false)
+  wallet       Wallet?
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Wallet {
+  id      String @id @default(cuid())
+  balance Float  @default(0.0)
+  userId  String @unique
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model Transaction {
+  id         String   @id @default(cuid())
+  type       String // "MONEY_LOADED", "MONEY_SENT", "MONEY_RECEIVED"
+  amount     Float
+  senderId   String? // For send money transactions
+  receiverId String? // For receive money transactions
+  userId     String // User who made the transaction (for both sender and receiver)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+}
