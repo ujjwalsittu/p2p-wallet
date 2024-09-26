@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid()) // CUID for user ID
+  id           String        @id @default(cuid())
   phone        String        @unique
-  email        String        @unique
-  password     String
-  aadhaar      String? // For KYC
-  pan          String? // For KYC
+  name         String?
+  mpin         String?
+  email        String?       @unique
+  password     String?
+  aadhaar      String?
+  pan          String?
   kycCompleted Boolean       @default(false)
-  wallet       Wallet?
-  transactions Transaction[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+  wallet       Wallet?
 }
 
 model Wallet {
@@ -36,11 +32,15 @@ model Wallet {
 
 model Transaction {
   id         String   @id @default(cuid())
-  type       String // "MONEY_LOADED", "MONEY_SENT", "MONEY_RECEIVED"
+  type       String
   amount     Float
-  senderId   String? // For send money transactions
-  receiverId String? // For receive money transactions
-  userId     String // User who made the transaction (for both sender and receiver)
+  senderId   String?
+  receiverId String?
+  userId     String
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
+}
+
+enum crdb_internal_region {
+  aws_ap_south_1 @map("aws-ap-south-1")
 }

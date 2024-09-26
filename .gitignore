@@ -5,6 +5,7 @@ migrations
 .sql
 # Ignore the build directory
 build
+dist
 # Ignore the coverage directory
 coverage
 # Ignore the .DS_Store file
